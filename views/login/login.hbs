@@ -1,0 +1,27 @@
+<div class="app logres">
+    <div class="screen join-screen">
+        <form class="form" action="" method="POST">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <h2>Welcome Back</h2>
+            <h4>Enter your credentials to access your account</h4>
+            <div class="form-input">
+                <div class="form-box">
+                    <label>Username</label>
+                    <input type="text" id="username" name="username" placeholder="example" required>   
+                </div>
+                <div class="form-box">
+                    <label>Password</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>  
+                </div>
+            </div>
+            <div class="form-input">
+                <button type="submit" id="join-user">Sign in</button>
+            </div>
+            <h4>Don't have an account? <a href="/auth/register">Sign Up</a></h4>
+
+            {{#if error}}
+            <p class="logreg-error">{{error}}</p>
+            {{/if}}
+        </form>
+    </div>
+</div>

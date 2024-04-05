@@ -1,0 +1,124 @@
+<div class="app chat" data-username="{{username}}">
+    <div class="left-bar">
+        <header class="header">
+            <div class="icon-group">
+                <div class="circulo"></div>
+                <div class="titleH"><h1>@{{username}}</h1></div>
+            </div>
+            <button id="left-to-right">
+                <svg id="svg-left-to-right"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F5" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </header>
+
+        <input type="text" id="search-user-id" placeholder="Insert an username">
+        <div class="contents">
+            <div class="my-channels">
+                <h2>My channels</h2>
+                <div id="channels">
+                    <!-- Caja de texto a repetir !-->
+                </div>
+            </div>
+            <div class="my-direct-msg">
+                <h2>My direct messages</h2>
+                <div id="direct-msg">
+                    <!-- Caja de texto a repetir !-->
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="logoutbutton">
+                <a href="/auth/logout" id="logout">Logout 
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6B7280" width="20" height="20" class="w-6 h-6" id="svg-logout">
+                        <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                
+            </div>
+            
+        </footer>
+    </div>
+    <div class="chat-screen">
+        <header class="header">
+            <div class="left-group">
+                <button id="to-left">
+                    <svg id="svg-to-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F5" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div>
+                    <h1 id="chat-title">#general</h1>
+                    <h2 id="chat-code">desc</h2>
+                </div>
+            </div>
+            <button id="to-right">
+                <svg id="svg-to-right"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F5" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </header>
+        <div class="messages">
+            <!-- Caja de texto a repetir !-->
+        </div>
+        <footer class="footer">
+            <div class="typebox">
+                <input type="text" id="message-input">
+                <button id="send-message">
+                    <svg id="svg-send-msg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#22272B" class="w-6 h-6">
+                        <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                    </svg>
+                </button>
+            </div>
+        </footer>
+        
+    </div>
+    <div class="right-bar">
+        <header class="header">
+            <button id="right-to-left">
+                <svg id="svg-right-to-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#F5F5F5" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <h1>Find new rooms</h1>
+        </header>
+        <div class="contents" id="rooms-container">
+            <!-- Caja de texto a repetir !-->
+        </div>
+        
+        <form class="form-room" id="new-room-form">
+            <div class="subheader">
+                <h1>Create new room</h1>
+                <a href="#" id="cancel-form">cancelar</a>
+            </div>
+            <div class="form-new-room">
+                <div class="form-box">
+                    <label>Room's name</label>
+                    <input type="text" id="new-room-name" name="new-room-name" placeholder="Software Room" required maxlength="15" title="Please enter a room name with a maximum of 15 characters.">   
+                </div>
+                <div class="form-box">
+                    <label>Description</label>
+                    <input type="text" id="new-room-description" name="new-room-description" placeholder="Room to get knowledge about software" required>   
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="select-radio">
+                    <label class="opcion">
+                        <input type="radio" name="opcion" value="0" required> Public
+                    </label>
+                    <label class="opcion">
+                        <input type="radio" name="opcion" value="1" required> Private
+                    </label>
+                </div>
+                <button type="submit" id="create-new-room">Create</button>
+            </div> 
+        </form>
+
+        <footer class="footer">
+            <input type="text" id="search-room-id" placeholder="Insert a room-id">
+            <button id="up-room-form">Create new room</button>
+        </footer>
+    </div>
+</div>
+<script type="text/javascript" src="socket.io/socket.io.js"></script>
+<script type="text/javascript" src="../js/code.js"></script>
