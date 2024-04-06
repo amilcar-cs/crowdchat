@@ -668,7 +668,7 @@ const main = (function(UIController, ServiceController) {
         // Init App: Establecen los valores iniciales de cualquier sesión.
         session.setUsername(getAppUsername());
         session.setLastChatId("");
-        session.setChatId("38pn1g==");
+        session.setChatId("1SnuCA==");
         session.setType(0);
 
         // Init App: Establece los valores del usuario al iniciar sesión.
