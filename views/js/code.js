@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const rightBar = document.querySelector(".right-bar");
 
     toLeftButton.addEventListener("click", function() {
-        console.log("simon");
         leftBar.style.display = "flex";
         chatScreen.style.display = "none";
         rightBar.style.display = "";
@@ -51,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (screenWidth < 765){
             chatScreen.style.display = "none";
         } else {
-            console.log("NO: ",screenWidth)
             leftBar.style.display = "none";
             toRightButton.style.display="none";
         }
@@ -77,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const lgtElement = document.getElementById('lgt');
         const drkElement = document.getElementById('drk');
         const body = document.body;
-        console.log("clicked")
         if (lgtElement.style.display === 'none') {
             lgtElement.style.display = 'block';
             drkElement.style.display = 'none';
@@ -325,9 +322,6 @@ const UIController = (function() {
 
     // IU: Inserta un mensaje en el contenedor de mensajes.
     function renderMessage(type, private, message) {
-        console.log("type: ",type);
-        console.log("private: ",private)
-        console.log("msg: ",message)
         // Crear un nuevo elemento div para representar el mensaje
         let messageElement = document.createElement("div");
     
@@ -842,7 +836,6 @@ const main = (function(UIController, ServiceController) {
 
         refreshButton.addEventListener('click', function() {
             // Aquí colocas el código que deseas ejecutar cuando se hace clic en el botón "refresh-rooms"
-            console.log('Se hizo clic en el botón de actualizar habitaciones.');
             // Por ejemplo, puedes llamar a una función que actualiza las habitaciones
             updatePublicRooms(session.getUsername());
         });

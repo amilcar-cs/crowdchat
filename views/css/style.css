@@ -38,7 +38,6 @@ select:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 1000px var(--main-color) inset; /* Fondo transparente */
     -webkit-text-fill-color: var(--text-color) !important;
     caret-color: var(--text-color);
-    box-shadow:var(--main-color);
     border: 1px solid var(--main-color);
     outline: 1px solid var(--main-color);
 }
