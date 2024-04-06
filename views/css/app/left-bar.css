@@ -1,0 +1,208 @@
+.left-bar {
+    border-radius: 1.4375em 0px 0px 1.4375em;
+    background: var(--lb-color);
+    width: 100%;
+    height: 100%;
+    max-width: 238px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.left-bar .header .circulo {
+    width: 2.4375em;
+    height: 2.4375em;
+    background-color: var(--sub1-color); /* Color del círculo */
+    border-radius: 50%; /* Forma de círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color); /* Color del texto */
+    margin-right: 0.625em;
+    font-size: 1.125em;
+}
+
+.left-bar .header {
+    height: auto;
+    min-height: 5.125em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.0625em solid var(--sub1-color);
+    padding: 1.25em;
+}
+
+.left-bar .header #left-to-right{
+    display: none;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.left-bar .header #left-to-right svg path {
+    fill: var(--text-color);
+}
+
+.left-bar .header #left-to-right:hover svg path {
+    fill: var(--highlight-color);
+}
+
+.left-bar .header .icon-group {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.left-bar .contents {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25em 1.25em 0em 1.25em;
+    margin-bottom: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.left-bar .contents h2{
+    color: var(--text-color);
+    font-size: 1.125em;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.36px;
+}
+
+.left-bar #search-user-id {
+    height: auto;
+    margin: 1.25em 1.25em 0px 1.25em;
+    background: var(--sub1-color);
+    outline: none;
+    border: 0.0625em solid var(--sub1-color);
+    border-radius: 0.375em;
+    padding: 0.625em;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.left-bar .header .icon-group .titleH{
+    overflow: hidden;
+    max-width: 17vh;
+}
+
+.left-bar .header h1{
+    font-size: 1.125em;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.left-bar .contents .my-channels {
+    max-height: 50%;
+    overflow: hidden;
+}
+
+.left-bar .contents .my-direct-msg {
+    margin-top: 1.0625em;
+    max-height: 50%;
+    overflow: hidden;
+}
+
+.left-bar .contents .my-channels #channels {
+    height: 88%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.left-bar .contents .my-channels #channels a {
+    color: var(--text-color);
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.32px;
+    text-decoration-line: underline;
+    margin-bottom: 0.3125em;
+}
+
+.left-bar .contents .my-channels #channels a:hover {
+    color: var(--highlight-color);
+}
+
+.left-bar .contents .my-direct-msg #direct-msg {
+    height: 88%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.left-bar .contents .my-direct-msg #direct-msg a {
+    color: var(--text-color);
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.32px;
+    text-decoration-line: underline;
+    margin-bottom: 0.3125em;
+}
+
+.left-bar .contents .my-direct-msg #direct-msg a:hover {
+    color: var(--highlight-color);
+}
+
+.left-bar footer{
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25em;
+}
+
+.left-bar footer .logoutbutton a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--sub2-color);
+}
+
+.left-bar footer .logoutbutton a:hover{
+    color:var(--text-color);
+}
+
+.left-bar footer .logoutbutton a:hover svg path {
+    fill: var(--text-color);
+}
+
+.left-bar footer #svg-logout{
+    width: 1.25em;
+    height: 1.25em;
+    fill: var(--sub2-color);
+}
+
+.left-bar .header #left-to-right #svg-left-to-right {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.left-bar footer .drkmode{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
+    background: var(--lb-color);
+    cursor: pointer;
+    border: none;
+}
+
+.left-bar footer .drkmode svg path{
+    stroke: var(--sub2-color);
+}
+
+.left-bar footer .drkmode:hover svg path{
+    stroke: var(--highlight-color);
+}
+
+.left-bar footer .drkmode #lgt{
+    display: none;
+}

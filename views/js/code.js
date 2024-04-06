@@ -1,14 +1,41 @@
+function verificarTamañoPantalla() {
+    var rightBar = document.querySelector('.right-bar');
+    if (window.getComputedStyle(rightBar).display === 'flex') {
+        if (window.innerWidth > 765 && window.innerWidth < 1155 ){
+            document.querySelector('.left-bar').style.display = "none";
+            document.querySelector('.chat-screen').style.display = "";
+            document.getElementById("to-right").style.display = "none";
+        } else {
+            if (window.innerWidth < 765) {
+                document.querySelector('.chat-screen').style.display = "none";
+            } else {
+                document.querySelector('.chat-screen').style.display = "";
+                document.querySelector('.left-bar').style.display = "";
+            }
+        }
+    }
+}
+
+// Ejecutar la función cuando la página se carga
+window.onload = verificarTamañoPantalla;
+
+// Ejecutar la función cuando se cambie el tamaño de la pantalla
+window.addEventListener('resize', verificarTamañoPantalla);
+
 document.addEventListener("DOMContentLoaded", function() {
     var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
     const toLeftButton = document.getElementById("to-left");
     const leftBar = document.querySelector(".left-bar");
     const chatScreen = document.querySelector(".chat-screen");
+    const toRightButton = document.getElementById("to-right");
+    const rightBar = document.querySelector(".right-bar");
 
     toLeftButton.addEventListener("click", function() {
         console.log("simon");
         leftBar.style.display = "flex";
         chatScreen.style.display = "none";
+        rightBar.style.display = "";
     });
 
     const LefttoRightButton = document.getElementById("left-to-right");
@@ -17,13 +44,14 @@ document.addEventListener("DOMContentLoaded", function() {
         chatScreen.style.display = "";
     });
 
-    const toRightButton = document.getElementById("to-right");
-    const rightBar = document.querySelector(".right-bar");
+    
     toRightButton.addEventListener("click", function() {
+        var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         rightBar.style.display = "flex";
-        if (screenHeight > 1900){
+        if (screenWidth < 765){
             chatScreen.style.display = "none";
         } else {
+            console.log("NO: ",screenWidth)
             leftBar.style.display = "none";
             toRightButton.style.display="none";
         }
@@ -31,12 +59,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const RighttoLeftButton = document.getElementById("right-to-left");
     RighttoLeftButton.addEventListener("click", function() {
+        var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         rightBar.style.display = "";
-        if (screenHeight > 1900){
+        if (screenWidth < 765){
             chatScreen.style.display = "";
+            toRightButton.style.display="";
+            leftBar.style.display = "";
         } else {
             leftBar.style.display = "";
             toRightButton.style.display="";
+        }
+    });
+
+    const botonDrkMode = document.querySelector('.drkmode');
+
+    botonDrkMode.addEventListener('click', function() {
+        const lgtElement = document.getElementById('lgt');
+        const drkElement = document.getElementById('drk');
+        const body = document.body;
+        console.log("clicked")
+        if (lgtElement.style.display === 'none') {
+            lgtElement.style.display = 'block';
+            drkElement.style.display = 'none';
+            // Agregar clase "dark-mode" y quitar clase "light-mode"
+            body.classList.remove('light-theme');
+            body.classList.add('dark-theme');
+        } else {
+            lgtElement.style.display = 'none';
+            drkElement.style.display = 'block';
+            // Agregar clase "light-mode" y quitar clase "dark-mode"
+            body.classList.remove('dark-theme');
+            body.classList.add('light-theme');
         }
     });
 });
@@ -161,15 +214,15 @@ const UIController = (function() {
     }
 
     // IU: Despliega un mensaje recibido por el servidor.
-    function handleChatMessage(message) {
-        const messageType = message.username === session.getUsername() ? "my" : "other";
-        renderMessage(messageType, session.getType(), message);
+    function handleChatMessage(message,username,type) {
+        const messageType = message.username === username ? "my" : "other";
+        renderMessage(messageType, type, message);
     }
 
     // IU: Despliega un mensaje al unirse un usuario a la sala.
-    function handleUpdate(update) {
+    function handleUpdate(update,type) {
         // Función para manejar actualizaciones generales
-        renderMessage("update", session.getType(), update);
+        renderMessage("update", type, update);
     }
 
     // IU: Actualiza la información de la barra izquiera con las salas del usuario.
@@ -410,13 +463,17 @@ const ServiceController = (function(username) {
     }
     
     // Server (Recibe del servidor): Recibe un mensaje de actualización para una sala.
-    function update(handleUpdate){
-        socket.on("update", handleUpdate);
+    function update(handleUpdate,type){
+        socket.on("update", (update) => {
+            handleUpdate(update, type);
+        });
     }
 
     // Server (Recibe del servidor): Recibe un mensaje en una sala.
-    function chatting(handleChatMessage){
-        socket.on("chat", handleChatMessage);
+    function chatting(handleChatMessage,username,type){
+        socket.on("chat", (message) => {
+            handleChatMessage(message, username,type);
+        });
     }
 
     // Server (Envía al servidor): Envía un mensaje al servidor.
@@ -652,8 +709,8 @@ const main = (function(UIController, ServiceController) {
         login(getAppUsername());
         refreshPage();
         newDirectMsg(updateMyDirectMsg);
-        update(handleUpdate);
-        chatting(handleChatMessage);
+        update(handleUpdate,session.getType());
+        chatting(handleChatMessage,session.getUsername(),session.getType());
     }
 
     function setupTriggerEvents(){
@@ -794,6 +851,15 @@ const main = (function(UIController, ServiceController) {
                 // Ejecuta la función cuando se presiona Enter
                 sendMessage();
             }
+        });
+
+        var refreshButton = document.getElementById('refresh-rooms');
+
+        refreshButton.addEventListener('click', function() {
+            // Aquí colocas el código que deseas ejecutar cuando se hace clic en el botón "refresh-rooms"
+            console.log('Se hizo clic en el botón de actualizar habitaciones.');
+            // Por ejemplo, puedes llamar a una función que actualiza las habitaciones
+            updatePublicRooms(session.getUsername());
         });
     }
     

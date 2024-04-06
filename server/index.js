@@ -38,12 +38,7 @@ app.use(bodyparser.json());
 app.use(cookieParser());
 
 // Middleware para evitar ataques XSS
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      'object-src': ["'self'", "http://localhost:3000"] // Configuración de la política de seguridad de contenido (CSP)
-  }
-}));
+app.use(helmet());
 
 // Configuración de las sesiones
 app.use(session({

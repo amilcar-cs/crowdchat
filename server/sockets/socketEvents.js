@@ -104,11 +104,11 @@ module.exports = function(io) {
                     const count = await RoomChat.isUserInRoom(user,room.id);
                     if (!count) {
                         await RoomChat.joinRoom(user,room.id);
+                        socket.broadcast.to(room.id).emit("update", user + " joined the conversation");
                     }
 
                     socket.leave(lastchatid);
                     socket.join(room.id);
-                    socket.broadcast.to(room.id).emit("update", user + " joined the conversation");
                     socket.emit('data-chat', true, {id: room.id, name: room.name, description: room.description, creator: room.creator, private: room.private});
                 } else {
                     socket.emit('data-chat', false, {});

@@ -1,0 +1,199 @@
+.chat-screen {
+    min-width: 600px;
+    max-width: 600px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+.chat-screen .header {
+    background: var(--sub1-color);
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25em;
+    min-height: 5.125em;
+}
+
+.chat-screen .header .left-group{
+    display: flex;
+    align-items: center;
+}
+.chat-screen .header .left-group button{
+    margin-right: 0.625em;
+}
+
+.chat-screen .header button{
+    display: none;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+.chat-screen .header button svg path {
+    fill: var(--text-color);
+}
+
+.chat-screen .header button:hover svg path {
+    fill: var(--highlight-color);
+}
+
+.chat-screen .header h1 {
+    color: var(--text-color);
+    font-size: 1.125em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.36px;
+    margin-bottom: 0.1875em;
+}
+
+.chat-screen .header h2 {
+    color: var(--sub2-color);
+    font-size: 0.875em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.28px;
+}
+
+.chat-screen .messages {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: auto;
+    padding: 1.25em;
+}
+
+.chat-screen .messages .message{
+    display: flex;
+    margin-bottom: 1.0625em;
+}
+
+.chat-screen .messages .message > div {
+    max-width: 80%;
+}
+
+.chat-screen .messages .message .text-box {
+    display: flex;
+    padding: 0.75em;
+    align-items: end;
+}
+
+.chat-screen .messages .message.my-message{
+    justify-content: flex-end;
+}
+
+.chat-screen .messages .message.my-message .text-box{
+    background-color: var(--highlight-color);
+    border-radius: 0.625em 0.25em 0.25em 0.625em;
+}
+
+.chat-screen .messages .message.other-message .text-box{
+    background-color: var(--sub1-color);
+    border-radius: 0.25em 0.625em 0.625em 0.25em;
+}
+
+.chat-screen .messages .message.other-message{
+    justify-content: flex-start;
+}
+
+.chat-screen .messages .message .name {
+    color: var(--text-color);
+    font-size: 0.75em;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.24px;
+    margin-bottom: 0.4375em;
+}
+
+.chat-screen .messages .message.my-message .name {
+    text-align: end;
+}
+
+.chat-screen .messages .message .text{
+    width: 88%;
+    word-wrap: break-word;
+    color: var(--text-color);
+    font-size: 0.875em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.28px;
+    margin-right: 1.25em;
+}
+
+.chat-screen .messages .message.my-message .text{
+    color: var(--btntext-color);
+}
+
+.chat-screen .messages .message .time{
+    color: var(--wcolor);
+    font-size: 0.75em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.24px;
+}
+
+.chat-screen .messages .message.my-message .time{
+    color: var(--btntext-color);
+    color: rgba(255, 255, 255, 0.40);
+}
+
+.chat-screen .messages .update {
+    text-align: center;
+    padding: 0.625em;
+    font-style: italic;
+}
+
+.chat-screen footer {
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    padding: 1.25em;
+}
+
+.chat-screen .typebox {
+    width: 100%;
+    height: 100%;
+    display: flex
+}
+
+.chat-screen .typebox input {
+    flex: 1;
+    height: auto;
+    font-size: 1.125em;
+    background: var(--sub1-color);
+    outline: none;
+    border: 0.0625em solid var(--sub1-color);
+    border-radius: 0.375em;
+    padding: 0.3125em 0.625em;
+    color: var(--text-color);
+    font-size: 1em;
+}
+
+.chat-screen .typebox button {
+    width: auto;
+    height: auto;
+    font-size: 1em;
+    outline: none;
+    background: var(--main-color);
+    border: none;
+    cursor: pointer;
+    margin-left: 0.9375em;
+}
+
+.chat-screen .typebox button svg path {
+    fill: var(--sub1-color);
+}
+
+
+.chat-screen .typebox button:hover svg path {
+    fill: var(--highlight-color);
+}
