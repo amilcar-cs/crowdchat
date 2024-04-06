@@ -422,7 +422,7 @@ select:-webkit-autofill:focus {
     .chat-screen .header #to-right{
         display: block;
     }
-    .right-bar .header #right-to-left {
+    .right-bar .header .group-r #right-to-left {
         display: block;
     }
     .right-bar{

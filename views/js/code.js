@@ -325,6 +325,9 @@ const UIController = (function() {
 
     // IU: Inserta un mensaje en el contenedor de mensajes.
     function renderMessage(type, private, message) {
+        console.log("type: ",type);
+        console.log("private: ",private)
+        console.log("msg: ",message)
         // Crear un nuevo elemento div para representar el mensaje
         let messageElement = document.createElement("div");
     
@@ -358,9 +361,9 @@ const UIController = (function() {
     
         // Agregar el elemento del mensaje al contenedor de mensajes
         messageContainer.appendChild(messageElement);
-    
+
         // Desplazar el contenedor de mensajes hacia abajo para mostrar el mensaje recién agregado
-        messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+        messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 
     return {
@@ -461,20 +464,6 @@ const ServiceController = (function(username) {
     function newDirectMsg(updateMyDirectMsg){
         socket.on('new-direct-message', updateMyDirectMsg);
     }
-    
-    // Server (Recibe del servidor): Recibe un mensaje de actualización para una sala.
-    function update(handleUpdate,type){
-        socket.on("update", (update) => {
-            handleUpdate(update, type);
-        });
-    }
-
-    // Server (Recibe del servidor): Recibe un mensaje en una sala.
-    function chatting(handleChatMessage,username,type){
-        socket.on("chat", (message) => {
-            handleChatMessage(message, username,type);
-        });
-    }
 
     // Server (Envía al servidor): Envía un mensaje al servidor.
     function sendMessageToServer(username, message, currentTime, chatId, type) {
@@ -545,8 +534,6 @@ const ServiceController = (function(username) {
         fetchDirectMessages: fetchDirectMessages,
         joinToDirectChat: joinToDirectChat,
         newDirectMsg: newDirectMsg,
-        update: update,
-        chatting: chatting,
         sendMessageToServer: sendMessageToServer,
         fetchUserRooms: fetchUserRooms,
         fetchUserDirectChats: fetchUserDirectChats,
@@ -594,8 +581,6 @@ const main = (function(UIController, ServiceController) {
         fetchDirectMessages,
         joinToDirectChat,
         newDirectMsg,
-        update,
-        chatting,
         sendMessageToServer,
         fetchUserRooms,
         fetchUserDirectChats,
@@ -709,8 +694,8 @@ const main = (function(UIController, ServiceController) {
         login(getAppUsername());
         refreshPage();
         newDirectMsg(updateMyDirectMsg);
-        update(handleUpdate,session.getType());
-        chatting(handleChatMessage,session.getUsername(),session.getType());
+        update(handleUpdate);
+        chatting(handleChatMessage,session.getUsername());
     }
 
     function setupTriggerEvents(){
@@ -860,6 +845,20 @@ const main = (function(UIController, ServiceController) {
             console.log('Se hizo clic en el botón de actualizar habitaciones.');
             // Por ejemplo, puedes llamar a una función que actualiza las habitaciones
             updatePublicRooms(session.getUsername());
+        });
+    }
+
+    // Server (Recibe del servidor): Recibe un mensaje de actualización para una sala.
+    function update(handleUpdate){
+        socket.on("update", (update) => {
+            handleUpdate(update, session.getType());
+        });
+    }
+
+    // Server (Recibe del servidor): Recibe un mensaje en una sala.
+    function chatting(handleChatMessage,username){
+        socket.on("chat", (message) => {
+            handleChatMessage(message, username, session.getType());
         });
     }
     
