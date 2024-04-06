@@ -51,10 +51,10 @@ module.exports = function(io) {
         // Evento de chat
         socket.on("chat", async (msg, chatId, type) => {
             if (type == 1){
-                await DirectChat.createMsg(chatId, msg.username, msg.text);
+                await DirectChat.createMsg(chatId, msg.username, msg.text, msg.time);
                 //await agregarMensajePersonal(chatId, msg.username, msg.text);
             } else {
-                await RoomChat.createMsg(chatId, msg.username, msg.text);
+                await RoomChat.createMsg(chatId, msg.username, msg.text, msg.time);
             }
             socket.broadcast.to(chatId).emit('chat', msg);
         });

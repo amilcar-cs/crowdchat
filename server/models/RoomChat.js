@@ -44,14 +44,14 @@ class RoomChat {
         }
     }
 
-    static async createMsg(chatId, sender, message) {
+    static async createMsg(chatId, sender, message, time) {
         const sql = `
         INSERT INTO room_messages (room_id, sender, message, pos, hora)
-        SELECT ?, ?, ?, IFNULL(MAX(pos), 0) + 1 AS nueva_posicion, DATE_FORMAT(NOW(), '%H:%i')
+        SELECT ?, ?, ?, IFNULL(MAX(pos), 0) + 1 AS nueva_posicion, ?
         FROM room_messages
         WHERE room_id = ?`;
         try {
-            const results = await dbConnection.queryAsync(sql, [chatId, sender, message, chatId]);
+            const results = await dbConnection.queryAsync(sql, [chatId, sender, message, time, chatId]);
             return results;
         } catch (error) {
             console.error('Error al agregar un nuevo mensaje grupal:', error);
