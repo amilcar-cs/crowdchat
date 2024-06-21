@@ -6,8 +6,8 @@ async function getPublicRooms(req, res) {
         const results = await User.findPublicRooms(userId);
         res.json(results);
     } catch (error) {
-        console.error('Error al recuperar las salas públicas de la base de datos: ' + error.stack);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error retrieving public rooms from the database: ' + error.stack);
+        res.status(500).send('Internal server error');
     }
 }
 
@@ -17,8 +17,8 @@ async function getMyChannels(req, res) {
         const results = await User.findChannels(userId);
         res.json(results);
     } catch (error) {
-        console.error('Error al recuperar las salas del usuario de la base de datos: ' + error.stack);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error retrieving user rooms from the database: ' + error.stack);
+        res.status(500).send('Internal server error');
     }
 }
 
@@ -28,8 +28,8 @@ async function getMyPersonalMsg(req, res) {
         const results = await User.findDirectRooms(userId);
         res.json(results);
     } catch (error) {
-        console.error('Error al recuperar los chats del usuario de la base de datos: ' + error.stack);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error retrieving user chats from the database: ' + error.stack);
+        res.status(500).send('Internal server error');
     }
 }
 

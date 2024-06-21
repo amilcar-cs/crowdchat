@@ -9,15 +9,15 @@
     align-items: stretch;
 }
 
-.left-bar .header .circulo {
+.left-bar .header .circle {
     width: 2.4375em;
     height: 2.4375em;
-    background-color: var(--sub1-color); /* Color del círculo */
-    border-radius: 50%; /* Forma de círculo */
+    background-color: var(--sub1-color);
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--text-color); /* Color del texto */
+    color: var(--text-color);
     margin-right: 0.625em;
     font-size: 1.125em;
 }

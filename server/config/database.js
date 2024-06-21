@@ -1,11 +1,11 @@
 const mysql = require('mysql');
-// Usar Variables de Entorno
+// Using Environment Variables
 const dotenv = require('dotenv');
 const path = require('path');
 const envPath = path.resolve(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
-// Configuración de la conexión a la base de datos
+// Configuration of the database connection
 const dbConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -14,13 +14,13 @@ const dbConnection = mysql.createConnection({
     database: process.env.DB_NAME
 });
 
-// Conectar a la base de datos
+// Connect to the database
 dbConnection.connect((err) => {
     if (err) {
-        console.error('Error al conectar a la base de datos:', err);
+        console.error('Error connecting to the database: ', err);
         return;
     }
-    console.log('Conexión a la base de datos establecida');
+    console.log('Connection to the established database');
 });
 
 // Promisify the dbConnection.query method

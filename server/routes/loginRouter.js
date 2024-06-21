@@ -3,7 +3,7 @@ const router = express.Router();
 const csrf = require('@dr.pogodin/csurf');
 const csrfProtection = csrf({ cookie: true });
 
-// Importar controladores de rutas
+// Import route controllers
 const LoginController = require('../controllers/loginControllers');
 
 

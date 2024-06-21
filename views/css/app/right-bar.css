@@ -237,7 +237,7 @@
     max-width: 105px;
 }
 
-.right-bar .form-room .subfooter .select-radio .opcion {
+.right-bar .form-room .subfooter .select-radio .option {
     font-size: 1em;
 }
 
@@ -273,4 +273,8 @@
     color: var(--text-color);
     font-size: 0.875em;
     cursor: pointer;
+}
+
+.right-bar footer #up-room-form:hover {
+    background: var(--highlight-color);
 }

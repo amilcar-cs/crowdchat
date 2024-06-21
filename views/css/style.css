@@ -1,11 +1,12 @@
 @import url(login.css);
 @import url(app.css);
+@import url(landing.css);
 
 .light-theme {
     --text-color: #111518;
     --wcolor: #11151840;
-    --btntext-color: #FFFFFF; /* Color de texto para el tema oscuro */
-    --main-color: #FFFFFF; /* Color de fondo para el tema oscuro */
+    --btntext-color: #FFFFFF;
+    --main-color: #FFFFFF;
     --sub1-color: #E3E4E8;
     --sub2-color: #C5CAD6;
     --lb-color: #F0F3F4;
@@ -13,17 +14,20 @@
     --highlight-color: #3B82F6;
 }
 
-/* Estilos para el tema oscuro */
 .dark-theme {
-    --text-color: #FFFFFF; /* Color de texto para el tema oscuro */
+    --text-color: #FFFFFF;
     --wcolor: #FFFFFF40;
     --btntext-color: #FFFFFF;
-    --main-color: #111518; /* Color de fondo para el tema oscuro */
+    --main-color: #111518;
     --sub1-color: #182024;
     --sub2-color: #38434F;
     --lb-color: #212A31;
     --scroll-color: #212A3135;
     --highlight-color: #3B82F6;
+}
+
+#bg {
+    background-image: url(./Group33.png);
 }
 
 input:-webkit-autofill,
@@ -35,31 +39,24 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px var(--main-color) inset; /* Fondo transparente */
+    -webkit-box-shadow: 0 0 0 1000px var(--main-color) inset;
     -webkit-text-fill-color: var(--text-color) !important;
     caret-color: var(--text-color);
     border: 1px solid var(--main-color);
     outline: 1px solid var(--main-color);
 }
-/* Estilo para el scroll vertical */
 ::-webkit-scrollbar {
-    width: 5px; /* Ancho del scroll */
+    width: 5px;
 }
-
-/* Estilo para la barra de desplazamiento */
 ::-webkit-scrollbar-thumb {
-    background-color: var(--sub2-color); /* Color de fondo del scroll */
-    border-radius: 5px; /* Borde redondeado */
+    background-color: var(--sub2-color);
+    border-radius: 5px; 
 }
-
-/* Estilo para el fondo del área del scroll */
 ::-webkit-scrollbar-track {
-    background-color: var(--scroll-color); /* Color de fondo */
+    background-color: var(--scroll-color); 
 }
-
-/* Estilo para los botones de la barra de desplazamiento */
 ::-webkit-scrollbar-button {
-    display: none; /* Oculta los botones de la barra de desplazamiento */
+    display: none;
 }
 
 * {
@@ -109,6 +106,9 @@ select:-webkit-autofill:focus {
     .right-bar{
         max-width: 100%;
     }
+    .lp .lp-blocks {
+        display: none;
+    }
 }
 
 @media (min-width:765px) { 
@@ -151,266 +151,9 @@ select:-webkit-autofill:focus {
         border-radius: 1.4375em 0px 0px 1.4375em;
     }
 
-    /*
-    .left-bar .contents .my-direct-msg {
-        margin-top: 17px;
-        max-height: 50%;
-    }
-    
-    .left-bar .contents .my-channels #channels {
-        height: 88%;
-        display: flex;
-    }
-    
-    .left-bar .contents .my-channels #channels a {
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-    
-    .left-bar .contents .my-direct-msg #direct-msg {
-        height: 88%;
-        display: flex;
-    }
-    
-    .left-bar .contents .my-direct-msg #direct-msg a {
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-    
-    .left-bar footer{
-        height: 65px;
-        display: flex;
-        padding: 15px 20px 15px 20px;
-    }
-    
-    .left-bar footer .logoutbutton a{
-        display: flex;
-    }
-
-    .left-bar footer .logoutbutton a{
-        display: flex;
-    }
-    .left-bar footer #logout {
-        font-size: 16px;
-    }
-    .left-bar footer #svg-logout {
-        width: 20px;
-        height: 20px;
-    }*/
-
     .right-bar {
         display: flex;
     }
-    /*
-    .right-bar .header {
-        height: auto;
-        min-height: 82px;
-        display: flex;
-        border-bottom: 1px solid #1C2023;
-        padding: 20px;
-    }
-    
-    .right-bar .header #right-to-left{
-        display: none;
-        margin-right: 10px;
-    }
-    
-    .right-bar .header h1 {
-        font-size: 18px;
-    }
-    
-    .right-bar .contents {
-        display: flex;
-        padding: 20px;
-        margin-bottom: auto;
-        width: 100%;
-    }
-    
-    .room-box {
-        width: 100%;
-        height: auto;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .room-box h3 {
-        font-size: 16px;
-        margin-bottom: 4px;
-    }
-    
-    .room-box .room-info {
-        display: flex;
-    }
-
-    .room-box h4 {
-        font-size: 12px;
-    }
-    
-    .room-box .room-desc {
-        color: #6B7280;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        letter-spacing: -0.28px;
-        margin-bottom: 17px;
-        word-wrap: break-word;
-    }
-    
-    .room-box button{
-        width: 100%;
-        height: auto;
-        flex-shrink: 0;
-        border-radius: 6px;
-        border: 1px solid #1C2023;
-        color: #F5F5F5;
-        padding: 10px 15px;
-        background: transparent;
-        font-size: 14px;
-        cursor: pointer;
-        outline: none;
-    }
-    
-    .room-box button:hover{
-        background: #1C2023;
-    }
-    
-    #new-room-form {
-        display: none;
-    }
-    
-    .right-bar .form-room{
-        background: #1C2023;
-        border-radius: 10px 10px 0px 0px;
-        padding: 20px;
-    }
-    
-    .right-bar .form-room h1{
-        color: #F5F5F5;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-    }
-    
-    .right-bar .form-room a{
-        color: #6B7280;
-        text-align: right;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        text-decoration-line: underline;
-    }
-    
-    .right-bar .form-room .subheader{
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    .right-bar .form-room .form-new-room {
-        width: 100%;
-        margin: 0px;   
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .right-bar .form-room .form-new-room .form-box {
-        width: 100%;
-        max-width: 355px;
-        height: 64px;
-        flex-shrink: 0;
-        border-radius: 4px;
-        border: 2px solid #1C2023;
-        background: #101214;
-        margin-top: 15px;
-    }
-    
-    .right-bar .form-room .form-new-room .form-box label {
-        display: block;
-        color: #6B7280;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        padding: 10px 0px 0px 10px;
-    }
-    
-    .right-bar .form-room .form-new-room .form-box input {
-        width: 100%;
-        padding: 10px;
-        background-color: transparent;
-        border: none; /* Quita el borde 
-        outline: none;
-        font-size: 16px;
-        color: #F5F5F5;
-    }
-    
-    .right-bar .form-room .subfooter {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 16px;
-    }
-    .right-bar .form-room .subfooter .select-radio {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .right-bar .form-room button {
-        padding: 10px 20px;
-        background: #3B82F6;
-        color: #F7F8F9;
-        cursor: pointer;
-        outline: none;
-        border: none;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        width: 60%;
-        max-width: 323px;
-        height: 45px;
-        border-radius: 6px;
-        max-width: 105px;
-    }
-    
-    
-    .right-bar footer{
-        display: flex;
-        justify-content: space-between;
-        height: 65px;
-        padding: 15px 20px 15px 20px;
-    }
-    
-    .right-bar footer #search-room-id {
-        width: 50%;
-        height: 100%;
-        margin-right: 5px;
-        background: #1C2023;
-        outline: none;
-        border: 1px solid #1C2023;
-        border-radius: 6px;
-        padding: 5px 10px;
-        color: #3B82F6;
-        font-size: 14px;
-    }
-    
-    .right-bar footer #up-room-form {
-        width: 50%;
-        height: 100%;
-        margin-left: 5px;
-        background: #101214;
-        outline: none;
-        border: 1px solid #1C2023;
-        border-radius: 6px;
-        padding: 5px 10px;
-        color: #F5F5F5;
-        font-size: 14px;
-        cursor: pointer;
-    }*/
 }
 
 @media screen and (max-width: 1155px){

@@ -7,8 +7,8 @@ async function getRoomMessages(req, res) {
         const messages = await RoomChat.findMsgById(roomId);
         res.json(messages);
     } catch (error) {
-        console.error('Error al recuperar mensajes de la base de datos: ' + error.stack);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error retrieving messages from the database: ' + error.stack);
+        res.status(500).send('Internal server error');
     }
 }
 
@@ -18,8 +18,8 @@ async function getPersonalMessages(req, res) {
         const messages = await DirectChat.findMsgById(chatId);
         res.json(messages);
     } catch (error) {
-        console.error('Error al recuperar mensajes de la base de datos: ' + error.stack);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error retrieving messages from the database: ' + error.stack);
+        res.status(500).send('Internal server error');
     }
 }
 

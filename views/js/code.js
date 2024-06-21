@@ -1,4 +1,5 @@
-function verificarTamañoPantalla() {
+// UI: Responsive chat layout and interactions
+function verifyScreenSize() {
     var rightBar = document.querySelector('.right-bar');
     if (window.getComputedStyle(rightBar).display === 'flex') {
         if (window.innerWidth > 765 && window.innerWidth < 1155 ){
@@ -16,12 +17,7 @@ function verificarTamañoPantalla() {
     }
 }
 
-// Ejecutar la función cuando la página se carga
-window.onload = verificarTamañoPantalla;
-
-// Ejecutar la función cuando se cambie el tamaño de la pantalla
-window.addEventListener('resize', verificarTamañoPantalla);
-
+// UI: button window interactions and dark mode
 document.addEventListener("DOMContentLoaded", function() {
     var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
@@ -91,6 +87,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Trigger: when screen sizes change, launch this function.
+window.onload = verifyScreenSize;
+window.addEventListener('resize', verifyScreenSize);
+
 const UIController = (function() {
     var app = document.querySelector(".app");
     let mychannelsContainer = document.getElementById("channels");
@@ -101,7 +101,7 @@ const UIController = (function() {
     var openFormBtn = document.getElementById("up-room-form");
     var closeFormBtn = document.getElementById("cancel-form");
     
-    // UI: Abre o cierra el formulario para crear una nueva sala.
+    // UI: Opens or closes the form to create a new room.
     function openForm(){
         openFormBtn.addEventListener("click", function() {
             if (formBox.style.display === "block"){
@@ -112,15 +112,15 @@ const UIController = (function() {
         });
     }
 
-    // UI: Cierra la pestaña para crear una nueva sala.
+    // UI: Closes the tab to create a new room.
     function closeForm(){
         closeFormBtn.addEventListener("click", function(event) {
-            event.preventDefault(); // Prevenir el comportamiento predeterminado del hipervínculo
+            event.preventDefault();
             formBox.style.display = "none";
         });
     }
 
-    // UI: Recupera el username del usuario.
+    // UI: Retrieves the user's username.
     function getAppUsername() {
         var username = app.getAttribute("data-username");
         if (username.length == 0) {
@@ -129,33 +129,33 @@ const UIController = (function() {
         return username;
     }
 
-    // UI: Evalúa si el formulario para crear una nueva sala está activo o no.
+    // UI: Evaluates if the form to create a new room is active or not.
     function isFormActive() {
         var form = document.getElementById("new-room-form");
-        return form.style.display === "block"; // Suponiendo que el formulario se activa con display block
+        return form.style.display === "block"; // Assuming the form is activated with display block
     }
 
-    // UI: Obtiene los valores del formulario para crear una nueva sala.
+    // UI: Obtains the values from the form to create a new room.
     function getFormData() {
-        // Obtener referencias a los elementos del formulario
+        // Get references to the form elements
         var newNameInput = document.getElementById("new-room-name");
         var newDescriptionInput = document.getElementById("new-room-description");
-        var opcionInputs = document.getElementsByName("opcion");
+        var optionInputs = document.getElementsByName("option");
 
-        // Obtener el valor del nombre y descripción
+        // Get the value of the name and description
         var newName = newNameInput.value;
         var newDescription = newDescriptionInput.value;
 
-        // Obtener la opción seleccionada
+        // Get the selected option
         var selectedOption;
-        for (var i = 0; i < opcionInputs.length; i++) {
-            if (opcionInputs[i].checked) {
-                selectedOption = opcionInputs[i].value;
+        for (var i = 0; i < optionInputs.length; i++) {
+            if (optionInputs[i].checked) {
+                selectedOption = optionInputs[i].value;
                 break;
             }
         }
 
-        // Devolver un objeto con los valores del formulario
+        // Return an object with the form values
         return {
             newName: newName,
             newDescription: newDescription,
@@ -163,72 +163,64 @@ const UIController = (function() {
         };
     }
 
-    // UI: Limpia los mensajes actuales.
+    // UI: Cleans the current messages.
     function cleanMessages(){
         messageContainer.innerHTML = " ";
     }
 
-    // UI: Función que modifica el ícono del usuario
-    function cambiarContenidoCirculo(texto) {
-        // Tomar la primera y última letra del string
-        var primeraLetra = texto.charAt(0).toUpperCase();
-        var ultimaLetra = texto.charAt(texto.length - 1).toUpperCase();
+    // UI: Function that modifies the user's icon
+    function changeContentCircle(text) {
+        var firstLetter = text.charAt(0).toUpperCase();
+        var lastLetter = text.charAt(text.length - 1).toUpperCase();
+        var newContent = firstLetter + lastLetter;
+        var circle = document.querySelector(".circle");
 
-        // Concatenar las letras en mayúsculas
-        var nuevoContenido = primeraLetra + ultimaLetra;
-
-        // Seleccionar el elemento con la clase "circulo"
-        var circulo = document.querySelector(".circulo");
-
-        // Cambiar el contenido del elemento
-        circulo.textContent = nuevoContenido;
+        // Change the content of the element
+        circle.textContent = newContent;
     }
 
-    // UI: Actualiza los mensajes actuales para mostrarlos en pantalla.
+    // UI: Updates the current messages to display them on the screen.
     function updateMessages(messages,username,type) {
         try {
-            messageContainer.innerHTML = ""; // Limpiar el contenedor de mensajes
+            messageContainer.innerHTML = ""; // Clean the message container
             messages.forEach(message => {
-                // Determinar si el mensaje es del usuario actual o de otro usuario y renderizarlo en consecuencia
+                // Determine whether the message is from the current user or from another user and render it accordingly
                 if (message.sender == username) {
                     renderMessage("my", type, {
                         username: message.sender,
                         text: message.message,
-                        time: message.hora.substring(0, 5)
+                        time: message.htime.substring(0, 5)
                     });
                 } else {
                     renderMessage("other", type, {
                         username: message.sender,
                         text: message.message,
-                        time: message.hora.substring(0, 5)
+                        time: message.htime.substring(0, 5)
                     });
                 }
             });
         } catch (error) {
-            console.error('Error al actualizar la interfaz de usuario:', error);
-            // Podrías tomar medidas adicionales aquí si la actualización de la interfaz de usuario falla
+            console.error('Error updating the user interface:', error);
         }
     }
 
-    // IU: Despliega un mensaje recibido por el servidor.
+    // UI: Displays a message received by the server.
     function handleChatMessage(message,username,type) {
         const messageType = message.username === username ? "my" : "other";
         renderMessage(messageType, type, message);
     }
 
-    // IU: Despliega un mensaje al unirse un usuario a la sala.
+    // UI: Displays a message when a user joins the room.
     function handleUpdate(update,type) {
-        // Función para manejar actualizaciones generales
         renderMessage("update", type, update);
     }
 
-    // IU: Actualiza la información de la barra izquiera con las salas del usuario.
+    // UI: Updates the left bar information with the user's rooms.
     function updateMyChannelsUI(userRooms) {
-    // Función para 
         try {
-            mychannelsContainer.innerHTML = ""; // Limpiar el contenido del contenedor
+            mychannelsContainer.innerHTML = "";
 
-            // Renderizar cada sala del usuario en la interfaz de usuario
+            // Render each user room in the user interface
             userRooms.forEach(room => {
                 renderMyChats("Channel", {
                     id: room.id,
@@ -236,18 +228,17 @@ const UIController = (function() {
                 });
             });
         } catch (error) {
-            console.error('Error al actualizar la interfaz de usuario:', error);
-            // Podrías tomar medidas adicionales aquí si la actualización de la interfaz de usuario falla
+            console.error('Error updating the user interface:', error);
         }
     }
 
-    // IU: Actualiza la información de la barra izquiera con los chats directos del usuario.
+    // UI: Updates the information in the left bar with the user's direct chats.
     function updateMyDirectMsgUI(userDirectChats) {
-    // Función para actualizar la interfaz de usuario con la información de los chats directos del usuario
+    // Function to update the user interface with information from the user's direct chats
         try {
-            mydirectmsgContainer.innerHTML = ""; // Limpiar el contenido del contenedor
+            mydirectmsgContainer.innerHTML = "";
 
-            // Renderizar cada chat directo en la interfaz de usuario
+            // Render each direct chat in the user interface
             userDirectChats.forEach(chat => {
                 renderMyChats("Direct", {
                     id: chat.id,
@@ -255,17 +246,16 @@ const UIController = (function() {
                 });
             });
         } catch (error) {
-            console.error('Error al actualizar la interfaz de usuario:', error);
-            // Podrías tomar medidas adicionales aquí si la actualización de la interfaz de usuario falla
+            console.error('Error updating the user interface:', error);
         }
     }
 
-    // IU: Actualiza la información de la barra derecha con las salas públicas que no tiene el usuario.
+    // UI: Updates the information in the right bar with the public rooms that the user does not have.
     function updatePublicRoomsUI(publicRoomsData) {
         try {
-            publicRoomContainer.innerHTML = ""; // Limpiar el contenido del contenedor
+            publicRoomContainer.innerHTML = "";
     
-            // Renderizar cada sala pública en la interfaz de usuario
+            // Render each public room in the user interface
             publicRoomsData.forEach(room => {
                 renderPublicRoom({
                     name: room.name,
@@ -276,34 +266,30 @@ const UIController = (function() {
                 });
             });
         } catch (error) {
-            console.error('Error al actualizar la interfaz de usuario:', error);
-            // Podrías tomar medidas adicionales aquí si la actualización de la interfaz de usuario falla
+            console.error('Error updating the user interface:', error);
         }
     }
 
-    // IU: Inserta un acceso directo a un chat (sala o directo) en la barra izquierda.
+    // UI: Inserts a shortcut to a chat (room or direct) in the left bar.
     function renderMyChats(type, room) {
-        // Determinar el contenedor correspondiente según el tipo
+        // Determine the corresponding container according to the type
         let container = type === "Channel" ? mychannelsContainer : mydirectmsgContainer;
-    
-        // Crear el elemento div correspondiente
+
         let chatElement = document.createElement("div");
-    
-        // Construir el HTML del elemento según el tipo
         let html = type === "Channel"
             ? `<a href="#" class="channel" my-room-id="${room.id}">#${room.name}</a>`
             : `<a href="#" class="direct" my-chat-id="${room.name}">@${room.name}</a>`;
     
-        // Establecer el contenido HTML del elemento
+        // Set the HTML content of the element
         chatElement.innerHTML = html;
     
-        // Agregar el elemento al contenedor correspondiente
+        // Add the element to the corresponding container
         container.appendChild(chatElement);
     }        
 
-    // IU: Inserta una sala pública en la barra derecha.
+    // UI: Inserts a public room in the right bar.
     function renderPublicRoom(room) {
-        // Crear el HTML del elemento de la sala pública
+        // Create the HTML of the public room element
         let roomHTML = `
             <div class="room-box">
                 <h3>${room.name}</h3>
@@ -316,22 +302,22 @@ const UIController = (function() {
             </div>
         `;
     
-        // Insertar el HTML del elemento de la sala pública en el contenedor de salas públicas
+        // Insert the HTML of the public room element into the public room container
         publicRoomContainer.insertAdjacentHTML('beforeend', roomHTML);
     }    
 
-    // IU: Inserta un mensaje en el contenedor de mensajes.
+    // UI: Inserts a message in the message container.
     function renderMessage(type, private, message) {
-        // Crear un nuevo elemento div para representar el mensaje
+        // Create a new div element to represent the message
         let messageElement = document.createElement("div");
     
-        // Determinar la clase del mensaje según el tipo (propio o de otro usuario)
+        // Determine the message type according to the type (your own or another user's)
         let messageClass = type === "my" ? "my-message" : type === "other" ? "other-message" : "update";
 
-        // Agregar las clases al elemento del mensaje
+        // Adding classes to the message element
         messageElement.classList.add(messageClass);
     
-        // Construir el contenido HTML del mensaje
+        // Build the HTML content of the message
         let innerHTML = `
             <div>
                 ${type === "my" && private === 0 ? `<div class="name">You</div>` : ""}
@@ -343,20 +329,20 @@ const UIController = (function() {
             </div>
         `;
     
-        // Si el mensaje es de tipo "update" y no es privado, se usa el contenido directo en lugar de un formato específico
+        // If the message is of type "update" and is not private, the direct content is used instead of a specific format.
         if (type === "update" && !private) {
             innerHTML = message;
         } else {
             messageElement.classList.add("message");
         }
     
-        // Agregar el contenido HTML al elemento del mensaje
+        // Add HTML content to the message element
         messageElement.innerHTML = innerHTML;
     
-        // Agregar el elemento del mensaje al contenedor de mensajes
+        // Add the message element to the message container
         messageContainer.appendChild(messageElement);
 
-        // Desplazar el contenedor de mensajes hacia abajo para mostrar el mensaje recién agregado
+        // Scroll the message container down to show the newly added message
         messageContainer.scrollTop = messageContainer.scrollHeight;
     }
 
@@ -367,7 +353,7 @@ const UIController = (function() {
         isFormActive: isFormActive,
         getFormData: getFormData,
         cleanMessages: cleanMessages,
-        cambiarContenidoCirculo: cambiarContenidoCirculo,
+        changeContentCircle: changeContentCircle,
         updateMessages: updateMessages,
         handleChatMessage: handleChatMessage,
         handleUpdate: handleUpdate,
@@ -379,89 +365,89 @@ const UIController = (function() {
 })();
 
 const ServiceController = (function(username) {
-    // Server: Se conecta del usuario al servidor.
+    // Server: Connects from the user to the server.
     const socket = io({
         extraHeaders: {
             "username": username
         }
     });
     
-    // Server (Envía al servidor): Solicita al servidor la creación de una nueva sala.
+    // Server: Requests the server to create a new room.
     function createRoom(roomName,desc,option,username,lastchatid){
         socket.emit('create room', {roomName, desc, option}, username, lastchatid);
     }
 
-    // Server (Envía al servidor): Crea y obtiene el id de una nueva sala.
+    // Server: Creates and obtains the id of a new room.
     function handleServerCommunication(formData, username, lastchatid, callback) {
-        // Función para manejar la lógica de comunicación con el servidor
+        // Function to handle the communication logic with the server
         createRoom(formData.newName, formData.newDescription, formData.selectedOption, username, lastchatid)
 
-        // Manejar la respuesta del servidor para obtener el ID de la sala creada
+        // Handle server response to obtain the ID of the created room
         socket.on('room-id', (roomId) => {
             callback(roomId);
         });
     }
 
-    // Server: Le informa al servidor de un inicio de sesión
+    // Server: Informs the server of a login
     function login(username){
         socket.emit("newuser",username);
     }
     
-    // Server (Envía al servidor): Solicita al servidor salir de la sesión
+    // Server (Send to server): Requests the server to exit the session.
     function exit(username) {
-        // Función para interactuar con el servidor
+        // Function to interact with the server
         socket.emit("exituser",username);
     }
 
-    // Server (Recibe del servidor): Actualiza la página.
+    // Server (Receive from server): Updates the page.
     function refreshPage(){
         socket.on("refresh",function(){
-            window.location.reload(true); // Recarga la página
+            window.location.reload(true); // Reload page
         });
     }
 
-    // Server (Recibe del servidor): Obtener los mensajes de una sala.
+    // Server (Receive from server): Get messages from a room.
     function fetchRoomMessages(roomId) {
         return fetch(`/messages/room/${roomId}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al obtener los mensajes');
+                    throw new Error('Error getting messages');
                 }
                 return response.json();
             });
     }
 
-    // Server (Envía al servidor): Solicita al servidor unirse a una sala.
+    // Server: Requests the server to join a room.
     function joinToRoom(message, username, lastchatid) {
-        // Función para interactuar con el servidor
+        // Function to interact with the server
         socket.emit("join room", message, username, lastchatid);
     }
 
-    // Server (Recibe del servidor): Obtener los mensajes de un chat directo.
+    // Server (Receive from server): Get messages from a direct chat.
     function fetchDirectMessages(chatId) {
         return fetch(`/messages/user/${chatId}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al obtener los mensajes');
+                    throw new Error('Error getting messages');
                 }
                 return response.json();
             });
     }
 
-    // Server (Envía al servidor): Solicita al servidor unirse a un chat directo.
+    // Server: Requests the server to join a direct chat.
     function joinToDirectChat(message, username, lastchatid) {
-        // Función para interactuar con el servidor
+        // Function to interact with the server
         socket.emit("direct message", message, username, lastchatid);
     }
 
-    // Server (Recibe del servidor): Recibe un mensaje directo.
+    // Server: Receives a direct message.
     function newDirectMsg(updateMyDirectMsg){
         socket.on('new-direct-message', updateMyDirectMsg);
     }
 
-    // Server (Envía al servidor): Envía un mensaje al servidor.
+    // Server (Send to Server): Sends a message to the server.
     function sendMessageToServer(username, message, currentTime, chatId, type) {
-    // Función para interactuar con el servidor
+    // Function to interact with the server
         socket.emit("chat", {
             username: username,
             text: message,
@@ -469,54 +455,54 @@ const ServiceController = (function(username) {
         }, chatId, type);
     }
 
-    // Server (Envía y recibe del servidor): Solicita al servidor todas las salas en las que se encuentra un usuario.
+    // Server (Sends and receives from server): Requests from the server all the rooms in which a user is present.
     function fetchUserRooms(username) {
-    // Función para obtener la información de las salas del usuario desde el servidor
+    // Function to get the user's room information from the server
         return fetch(`/load/user-rooms/${username}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al obtener las salas del usuario: ' + response.statusText);
+                    throw new Error('Error obtaining user rooms: ' + response.statusText);
                 }
                 return response.json();
             })
             .catch(error => {
-                console.error('Error en la solicitud fetch:', error);
-                return []; // Retornar un array vacío en caso de error
+                console.error('Error in the fetch request: ', error);
+                return [];
             });
     }
 
-    // Server (Envía y recibe del servidor): Solicita al servidor todos los chats directos que tiene un usuario.
+    // Server (Send and receive from server): Requests all direct chats that a user has from the server.
     function fetchUserDirectChats(username) {
-    // Función para obtener la información de los chats directos del usuario desde el servidor
+    // Function to get the user's direct chats information from the server
         return fetch(`/load/user-chats/${username}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al obtener los chats directos del usuario: ' + response.statusText);
+                    throw new Error("Error getting the user's direct chats: " + response.statusText);
                 }
                 return response.json();
             })
             .catch(error => {
-                console.error('Error en la solicitud fetch:', error);
-                return []; // Retornar un array vacío en caso de error
+                console.error('Error in the fetch request: ', error);
+                return [];
             });
     }
 
-    // Server (Envía y recibe del servidor): Solicita al servidor todas las salas públicas en las que no se encuentra un usuario.
+    // Server (Send and receive from server): Requests from the server all public rooms in which a user is not present.
     function fetchPublicRoomsData(username) {
         return fetch(`/load/public-rooms/${username}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al obtener las salas públicas: ' + response.statusText);
+                    throw new Error('Error in obtaining public rooms: ' + response.statusText);
                 }
                 return response.json();
             })
             .catch(error => {
-                console.error('Error en la solicitud fetch:', error);
-                return []; // Retornar un array vacío en caso de error
+                console.error('Error in the fetch request: ', error);
+                return [];
             });
     }
 
-    // Retorno de todas las funciones
+    // Return of all functions
     return {
         socket: socket,
         handleServerCommunication: handleServerCommunication,
@@ -554,7 +540,7 @@ const main = (function(UIController, ServiceController) {
         isFormActive,
         getFormData,
         cleanMessages,
-        cambiarContenidoCirculo,
+        changeContentCircle,
         updateMessages,
         handleChatMessage,
         handleUpdate,
@@ -581,12 +567,12 @@ const main = (function(UIController, ServiceController) {
         fetchPublicRoomsData
     } = ServiceController;    
 
-    // Init App: Establece la cabezera del chat actual.
+    // Init App: Sets the current chat header.
     const chatHeader = {
         Title: "",
         Code: "",
 
-        // Funciones para establecer valores
+        // Functions for setting values
         setTitle: function(value) {
             var ttl = value.charAt(0).toUpperCase() + value.slice(1);
 
@@ -598,7 +584,7 @@ const main = (function(UIController, ServiceController) {
             this.Code = value;
         },
 
-        // Funciones para obtener valores
+        // Functions to obtain values
         getTitle: function() {
             return this.Title;
         },
@@ -607,14 +593,14 @@ const main = (function(UIController, ServiceController) {
         }
     }
 
-    // Init App: Establece los valores actuales de la sesión.
+    // Init App: Sets the current values of the session.
     const session = {
         username: "",
         lastChatId: "",
         chatId: "",
         type: "",
         
-        // Funciones para establecer valores
+        // Functions for setting values
         setUsername: function(value) {
         this.username = value;
         },
@@ -628,7 +614,7 @@ const main = (function(UIController, ServiceController) {
         this.type = value;
         },
         
-        // Funciones para obtener valores
+        // Functions to obtain values
         getUsername: function() {
         return this.username;
         },
@@ -643,45 +629,44 @@ const main = (function(UIController, ServiceController) {
         }
     };
     
-    // Función principal que inicia la aplicación
+    // Main function that starts the application
     function init() {
-        // Configurar eventos de la interfaz de usuario
+        // Configuring user interface events
         setupUIEvents();
 
-        // Configurar eventos del servidor
+        // Configure server events
         setupServiceEvents();   
         
-        // Configurar eventos de la aplicación
+        // Configure application events
         setupAppEvents();
 
-        // Configurar eventos de los triggers
+        // Configuring triggers events
         setupTriggerEvents();
     }
 
     function setupAppEvents(){
-        // Init App: Establecen los valores iniciales de cualquier sesión.
+        // Init App: Set the initial values of any session.
         session.setUsername(getAppUsername());
         session.setLastChatId("");
         session.setChatId("1SnuCA==");
         session.setType(0);
 
-        // Init App: Establece los valores del usuario al iniciar sesión.
+        // Init App: Sets the user's values when logging in.
         gotoRoom(session.getChatId()).then(function() {
             updatePublicRooms(session.getUsername());
             updateMyChannels(session.getUsername());
             updateMyDirectMsg(session.getUsername());
         });
 
-        // Init UI: Establece el ícono del usuario
-        cambiarContenidoCirculo(session.getUsername());
+        // Init UI: Set user icon
+        changeContentCircle(session.getUsername());
     }
 
     function setupUIEvents(){
-        // UI Init: Inicializa el botón para el formulario que crea una nueva sala.
+        // UI Init: Initializes the button for the form that creates a new room.
         openForm();
-        // UI Init: Inicializa el botón salir del formulario que crea una nueva sala.
+        // UI Init: Initializes the exit button of the form that creates a new room.
         closeForm();
-        // UI Init: Inicializa los botones flecha para abrir o cerrar pestañas.
     }
 
     function setupServiceEvents(){
@@ -693,13 +678,13 @@ const main = (function(UIController, ServiceController) {
     }
 
     function setupTriggerEvents(){
-        // Trigger: Activa el controlador para unirse a una sala pública a la que no se ha unido.
+        // Trigger: Activates the controller to join a public room that has not been joined.
         roomContainer.addEventListener('click', function(event) {
-            // Verificar si el elemento clickeado es un botón
+            // Verify if the clicked element is a button
             if (event.target.classList.contains('join-to-room')) {
-                // Obtener el título de la caja asociada al botón clickeado
+                // Get the title of the box associated to the clicked button.
                 var roomId = event.target.parentNode.querySelector('.join-to-room').getAttribute("public-room-id");
-                // Imprimir el título en la consola
+                // Print the title on the console
                 gotoRoom(roomId).then(function() {
                     updateMyChannels(session.getUsername());
                     updatePublicRooms(session.getUsername());
@@ -714,12 +699,12 @@ const main = (function(UIController, ServiceController) {
             }
         });
 
-        // Trigger: Activa el controlador para unirse a una sala a la que ya se ha unido el usuario.
+        // Trigger: Activates the controller to join a room that the user has already joined.
         channelsContainer.addEventListener('click', function(event) {
             event.preventDefault();
-            // Verificar si el elemento clickeado es un botón
+            // Verify if the clicked element is a button
             if (event.target.classList.contains('channel')) {
-                // Obtener el título de la caja asociada al botón clickeado
+                // Get the title of the box associated to the clicked button.
                 var roomId = event.target.parentNode.querySelector('.channel').getAttribute("my-room-id");
                 if (roomId != session.getChatId()){
                     gotoRoom(roomId);
@@ -734,14 +719,14 @@ const main = (function(UIController, ServiceController) {
             }
         });
 
-        // Trigger: Activa el controlador para unirse a un chat directo al que ya se ha unido el usuario.
+        // Trigger: Activates the controller to join a direct chat that the user has already joined.
         directmsgContainer.addEventListener('click', function(event) {
             event.preventDefault();
-            // Verificar si el elemento clickeado es un botón
+            // Verify if the clicked element is a button
             if (event.target.classList.contains('direct')) {
-                // Obtener el título de la caja asociada al botón clickeado
+                // Get the title of the box associated to the clicked button.
                 var roomId = event.target.parentNode.querySelector('.direct').getAttribute("my-chat-id");
-                // Imprimir el título en la consola
+                // Print the title on the console
                 if (roomId.toLowerCase() != chatHeader.getTitle().toLowerCase()){
                     gotoDirectChat(roomId);
                 }
@@ -755,12 +740,12 @@ const main = (function(UIController, ServiceController) {
             }
         });
 
-        // Trigger: Activa el controlador para crear una nueva sala.
+        // Trigger: Activate the controller to create a new room.
         createNewRoom.addEventListener("submit", function(event) {
-            // Agregar un evento para manejar el formulario cuando se envíe
-            event.preventDefault(); // Evitar que el formulario se envíe
-            handleForm(); // Llamar a la función de manejo del formulario
-            // Ocultar el formulario después de procesarlo
+            // Adding an event to handle the form when it is submitted
+            event.preventDefault(); // Prevent the form from being sent
+            handleForm(); // Calling the form handling function
+            // Hide the form after processing
             createNewRoom.style.display = "none";
             var screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
             var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -771,9 +756,8 @@ const main = (function(UIController, ServiceController) {
             }
         });
 
-        // Trigger: Activa el controlador para irse a un chat directo
+        // Trigger: Activate the controller to go to a direct chat.
         inputPers.addEventListener("keyup", function(event) {
-            // 'Enter' es la tecla 'Intro' en español
             var chatID = inputPers.value;
             if (event.key === "Enter") {
                 if (chatID.toLowerCase() != chatHeader.getTitle().toLowerCase()){
@@ -790,9 +774,8 @@ const main = (function(UIController, ServiceController) {
             }
         });
         
-        // Trigger: Activa el controlador para irse a una sala
+        // Trigger: Activate the controller to go to a room.
         input.addEventListener("keyup", function(event) {
-            // 'Enter' es la tecla 'Intro' en español
             var chatID = input.value;
             if (event.key === "Enter") {
                 if (chatID != session.getChatId()){
@@ -811,23 +794,22 @@ const main = (function(UIController, ServiceController) {
             }
         });
 
-        // Trigger: Activa el controlador para salir de la sesión actual.
+        // Trigger: Activates the controller to exit the current session.
         logoutButton.addEventListener("click", function(event) {
             event.preventDefault();
 
             logoutSession();
         });
 
-        // Trigger: Activa el controlador para enviar un mensaje usando click.
+        // Trigger: Activates the controller to send a message using click.
         app.querySelector(".chat-screen #send-message").addEventListener("click",function(){
             sendMessage();
         });
 
-        // Trigger: Activa el controlador para enviar un mensaje usando enter.
+        // Trigger: Activates the controller to send a message using enter.
         inputMsg.addEventListener("keyup", function(event) {
-            // 'Enter' es la tecla 'Intro' en español
             if (event.key === "Enter") {
-                // Ejecuta la función cuando se presiona Enter
+                // Executes the function when Enter is pressed
                 sendMessage();
             }
         });
@@ -835,34 +817,34 @@ const main = (function(UIController, ServiceController) {
         var refreshButton = document.getElementById('refresh-rooms');
 
         refreshButton.addEventListener('click', function() {
-            // Aquí colocas el código que deseas ejecutar cuando se hace clic en el botón "refresh-rooms"
-            // Por ejemplo, puedes llamar a una función que actualiza las habitaciones
+            // Here you place the code you want to execute when the "refresh-rooms" button is clicked.
+            // For example, you can call a function which updates the rooms
             updatePublicRooms(session.getUsername());
         });
     }
 
-    // Server (Recibe del servidor): Recibe un mensaje de actualización para una sala.
+    // Server: Receives an update message for a room.
     function update(handleUpdate){
         socket.on("update", (update) => {
             handleUpdate(update, session.getType());
         });
     }
 
-    // Server (Recibe del servidor): Recibe un mensaje en una sala.
+    // Server (Receive from server): Receives a message in a room.
     function chatting(handleChatMessage,username){
         socket.on("chat", (message) => {
             handleChatMessage(message, username, session.getType());
         });
     }
     
-    // Controller (IU <-> Server): Controlador para crear una nueva sala.
+    // Controller (UI <-> Server): Controller to create a new room.
     function handleForm() {
-        // Función para manejar la lógica del formulario
+        // Function to handle form logic
         if (isFormActive()) {
-            // Obtener los valores del formulario
+            // Get form values
             var formData = getFormData();
             chatHeader.setTitle(formData.newName);
-            // Enviar los datos al servidor y manejar la respuesta
+            // Send the data to the server and handle the response
             handleServerCommunication(formData, session.getUsername(), session.getLastChatId(), function(roomId) {
                 session.setChatId(roomId);
                 chatHeader.setCode(session.getChatId());
@@ -873,24 +855,24 @@ const main = (function(UIController, ServiceController) {
         }
     }
 
-    // Controller (IU <-> Server): Controlador para salir de la sesión actual.
+    // Controller (UI <-> Server): Controller to exit the current session.
     function logoutSession(){
         exit(session.getUsername());
 
         socket.on("logout",function(href){
-            window.location.href = href; // Redirige a la página de inicio de sesión
+            window.location.href = href; // Redirect to login page
         });
 
         document.cookie = 'jwt_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     }
 
-    // Controller (IU <-> Server): Controlador para irse a una sala.
-    function gotoRoom(valor) {
-        // Función para manejar el cambio de sala
+    // Controller (IU <-> Server): Controller to go to a room.
+    function gotoRoom(value) {
+        // Function to manage room changeover
             return new Promise((resolve, reject) => {
-                joinToRoom(valor, session.getUsername(), session.getLastChatId())
+                joinToRoom(value, session.getUsername(), session.getLastChatId())
     
-                // Manejar la respuesta del servidor para obtener la información de la sala
+                // Handle the server response to get the room information.
                 socket.on('data-chat', function onDataChat(status, info) {
                     if (status) {
                         chatHeader.setTitle(info.name);
@@ -901,74 +883,74 @@ const main = (function(UIController, ServiceController) {
                         session.setLastChatId(session.getChatId());
                         session.setType(0);
     
-                        // Obtener los mensajes de la sala del servidor
+                        // Get messages from the server room
                         fetchRoomMessages(session.getChatId())
                             .then(data => {
-                                // Actualizar la interfaz de usuario con los mensajes recuperados
+                                // Update user interface with retrieved messages
                                 updateMessages(data,session.getUsername(),session.getType());
                             })
                             .catch(error => {
-                                console.error('Error al obtener los mensajes:', error);
+                                console.error('Error getting messages: ', error);
                             })
                             .finally(() => {
-                                // Resolve la promesa después de completar todas las tareas
-                                console.log("Datos cargados exitosamente");
+                                // Solve the pledge after completing all tasks
+                                console.log("Data successfully uploaded");
                                 resolve();
                             });
                     }
-                    socket.off('data-chat', onDataChat); // Desvincular el event listener después de su uso
+                    socket.off('data-chat', onDataChat); // Unlink event listener after use
                 });
             });
     }
 
-    // Controller (IU <-> Server): Controlador para irse a un chat directo. 
-    function gotoDirectChat(valor) {
-        // Función para manejar el cambio de chat directo
+    // Controller (UI <-> Server): Controller to go to a direct chat.
+    function gotoDirectChat(value) {
+        // Function to handle direct chat switching
             inputPers.value = "";
-            if (valor == session.getUsername()) {
+            if (value == session.getUsername()) {
                 return;
             }
     
-            joinToDirectChat(valor, session.getUsername(), session.getLastChatId())
+            joinToDirectChat(value, session.getUsername(), session.getLastChatId())
     
-            // Manejar la respuesta del servidor para obtener el ID del chat directo
-            socket.on('userchat-id', function onDirectChat(status, relacionID) {
+            // Handle server response to get the direct chat ID
+            socket.on('userchat-id', function onDirectChat(status, ID_Relation) {
                 if (status) {
-                    chatHeader.setTitle(valor);
+                    chatHeader.setTitle(value);
                     chatHeader.setCode("");
                     cleanMessages();
     
-                    session.setChatId(relacionID);
+                    session.setChatId(ID_Relation);
                     session.setLastChatId(session.getChatId());
                     session.setType(1);
     
-                    // Obtener los mensajes del chat directo del servidor
+                    // Get direct chat messages from the server
                     fetchDirectMessages(session.getChatId())
                         .then(data => {
-                            // Actualizar la interfaz de usuario con los mensajes recuperados
+                            // Update user interface with retrieved messages
                             updateMessages(data,session.getUsername(),session.getType());
                         })
                         .catch(error => {
-                            console.error('Error al obtener los mensajes:', error);
+                            console.error('Error getting messages: ', error);
                         });
                 }
-                socket.off('userchat-id', onDirectChat); // Desvincular el event listener después de su uso
+                socket.off('userchat-id', onDirectChat); // Unlink event listener after use
             });
     }
 
-    // Controller (IU <-> Server): Controlador para enviar mensajes al servidor y desplegarlos en el chat.
+    // Controller (UI <-> Server): Controller to send messages to the server and display them in the chat.
     function sendMessage() {
-    // Función para enviar un mensaje
+    // Function to send a message
         const messageInput = app.querySelector(".chat-screen #message-input");
-        let message = messageInput.value.trim(); // Eliminar espacios en blanco al inicio y al final del mensaje
-        messageInput.value = ""; // Limpiar el campo de entrada
+        let message = messageInput.value.trim(); // Removing blank spaces at the beginning and end of the message
+        messageInput.value = ""; // Clear input field
 
-        // Validar si el mensaje está vacío
+        // Validate if the message is empty
         if (!message) {
-            return; // No hacer nada si el mensaje está vacío
+            return; // Do nothing if the message is empty
         }
 
-        // Obtener la hora actual formateada
+        // Get current time formatted
         const currentDate = new Date();
         const formattedHours = currentDate.getHours().toString().padStart(2, '0');
         const formattedMinutes = currentDate.getMinutes().toString().padStart(2, '0');
@@ -982,33 +964,33 @@ const main = (function(UIController, ServiceController) {
         sendMessageToServer(session.getUsername(), message, currentTime, session.getChatId(),session.getType());
     }
 
-    // Controller (IU <-> Server): Controlador para actualizar las salas en las que se encuentra un usuario.
+    // Controller (UI <-> Server): Controller to update the rooms in which a user is located.
     function updateMyChannels(username) {
-        // Función principal que llama a las funciones anteriores para actualizar la interfaz de usuario con las salas del usuario
+        // Main function that calls the above functions to update the user interface with the user's rooms
         fetchUserRooms(username)
             .then(userRooms => {
                 updateMyChannelsUI(userRooms);
             });
     }
 
-    // Controller (IU <-> Server): Controlador para actualizar los mensajes directos que tiene un usuario.
+    // Controller (UI <-> Server): Controller to update the direct messages that a user has.
     function updateMyDirectMsg(username) {
-        // Función principal que llama a las funciones anteriores para actualizar la interfaz de usuario con los chats directos del usuario
+        // Main function that calls the above functions to update the user interface with the user's direct chats
         fetchUserDirectChats(username)
             .then(userDirectChats => {
                 updateMyDirectMsgUI(userDirectChats);
             });
     }
 
-    // Controller (IU <-> Server): Controlador para actualizar las salas públicas en las que no se encuentra un usuario.
+    // Controller (UI <-> Server): Controller for updating public rooms in which a user is not present.
     function updatePublicRooms(username) {
-        // Función principal que llama a las dos funciones para actualizar la interfaz de usuario con la información de las salas públicas
+        // Main function that calls the two functions to update the user interface with information from public rooms.
         fetchPublicRoomsData(username)
             .then(publicRoomsData => {
                 updatePublicRoomsUI(publicRoomsData);
             });
     }
 
-    // Llamar a la función de inicialización cuando se cargue el documento
+    // Call initialization function when the document is loaded
     document.addEventListener("DOMContentLoaded", init);
 })(UIController, ServiceController);

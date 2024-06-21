@@ -1,7 +1,7 @@
 const dbConnection = require('../config/database');
 const { v4: uuidv4 } = require('uuid');
 
-// Función para generar un ID corto único
+// Function to generate a unique short ID
 async function generateUniqueShortId() {
     let uuid = uuidv4();
     let shortId = Buffer.from(uuid, 'hex').toString('base64').slice(0, 8);
@@ -15,20 +15,20 @@ async function generateUniqueShortId() {
             return shortId;
         }
     } catch (error) {
-        console.error('Error al generar un ID corto único:', error);
+        console.error('Error generating a unique short ID:', error);
         throw error;
     }
 }
 
-// Definir modelo de usuario y tokens de actualización
+// Define user model and update tokens
 class RoomChat {
     static async findRoomById(shortId) {
-        const consulta = 'SELECT * FROM rooms WHERE id = ?';
+        const query = 'SELECT * FROM rooms WHERE id = ?';
         try {
-            const results = await dbConnection.queryAsync(consulta, [shortId]);
+            const results = await dbConnection.queryAsync(query, [shortId]);
             return results.length === 0 ? false : results[0];
         } catch (error) {
-            console.error('Error al obtener la sala por ID:', error);
+            console.error('Error getting the room by ID:', error);
             throw error;
         }
     }
@@ -39,22 +39,22 @@ class RoomChat {
             const results = await dbConnection.queryAsync(query, [roomId]);
             return results;
         } catch (error) {
-            console.error('Error al buscar mensajes personales por ID de chat:', error);
+            console.error('Error when searching for personal messages by chat ID:', error);
             throw error;
         }
     }
 
     static async createMsg(chatId, sender, message, time) {
         const sql = `
-        INSERT INTO room_messages (room_id, sender, message, pos, hora)
-        SELECT ?, ?, ?, IFNULL(MAX(pos), 0) + 1 AS nueva_posicion, ?
+        INSERT INTO room_messages (room_id, sender, message, pos, htime)
+        SELECT ?, ?, ?, IFNULL(MAX(pos), 0) + 1 AS new_position, ?
         FROM room_messages
         WHERE room_id = ?`;
         try {
             const results = await dbConnection.queryAsync(sql, [chatId, sender, message, time, chatId]);
             return results;
         } catch (error) {
-            console.error('Error al agregar un nuevo mensaje grupal:', error);
+            console.error('Error adding a new group message:', error);
             throw error;
         }
     }
@@ -65,13 +65,13 @@ class RoomChat {
             const query = 'INSERT IGNORE INTO rooms (id, name, description, creator, private) VALUES (?, ?, ?, ?, ?)';
             const results = await dbConnection.queryAsync(query, [roomId, roomData.name, roomData.description, roomData.creator, roomData.private]);
             if (results.affectedRows === 0) {
-                console.log("La sala ya existe.");
-                return null; // Retorna null para indicar que no se creó una nueva sala
+                console.log("The room already exists.");
+                return null; // Returns null to indicate that a new room was not created.
             }
-            console.log("Sala creada");
+            console.log("Room successfully created.");
             return roomId;
         } catch (error) {
-            console.error('Error al crear una nueva sala:', error);
+            console.error('Error creating a new room:', error);
             throw error;
         }
     }
@@ -82,7 +82,7 @@ class RoomChat {
             const results = await dbConnection.queryAsync(sql, [username, roomId]);
             return results;
         } catch (error) {
-            console.error('Error al agregar un nuevo participante a la sala:', error);
+            console.error('Error when adding a new participant to the room:', error);
             throw error;
         }
     }
@@ -94,11 +94,11 @@ class RoomChat {
             const count = results[0].count;
             return count > 0;
         } catch (error) {
-            console.error('Error al verificar si el usuario está en la sala:', error);
+            console.error('Error when checking if the user is in the room:', error);
             throw error;
         }
     }
 }
 
-// Exportar modelo de usuario y tokens de actualización
+// Export user model and update tokens
 module.exports = RoomChat;

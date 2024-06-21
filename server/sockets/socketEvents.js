@@ -3,26 +3,26 @@ const DirectChat = require('../models/DirectChat');
 const RoomChat = require('../models/RoomChat');
 
 module.exports = function(io) {
-    // <-- Pasar a DirectChat y RoomChat
+    // <-- Switch to DirectChat and RoomChat
 
-    async function verificarYCrearRelacion(username, usernameGlobal) {
+    async function verifyAndCreateRelationship(username, globalUsername) {
         try {
-            const usuarioExiste = await User.find(username);
-            if (!usuarioExiste) {
-                console.log('El usuario no existe en la base de datos.');
+            const userExists = await User.find(username);
+            if (!userExists) {
+                console.log('The user does not exist in the database.');
                 return;
             }
     
-            const existeRelacion = await DirectChat.between(username, usernameGlobal);
-            if (existeRelacion) {
-                console.log('Existe una relación personal_room entre', username, 'y', usernameGlobal);
-                const id = await DirectChat.findRoomById(username, usernameGlobal);
+            const relationshipExists = await DirectChat.between(username, globalUsername);
+            if (relationshipExists) {
+                console.log('There is a personal_room relationship between ', username, ' and ', globalUsername);
+                const id = await DirectChat.findRoomById(username, globalUsername);
                 console.log('ID de la relación personal_room:', id);
                 return { id: id, isNew: false };
             } else {
-                console.log('No existe una relación personal_room entre', username, 'y', usernameGlobal);
-                const id = await DirectChat.createRoom(username, usernameGlobal);
-                console.log('Relación personal_room creada con ID:', id);
+                console.log('There is no personal_room relationship between ', username, ' and ', globalUsername);
+                const id = await DirectChat.createRoom(username, globalUsername);
+                console.log('Personal_room relationship created with ID: ', id);
                 return { id: id, isNew: true };
             }
         } catch (error) {
@@ -31,35 +31,33 @@ module.exports = function(io) {
         }
     }
 
-    // Evento de conexión de Socket.io
+    // Socket.io connection event
     io.on("connection", function(socket){
-        // Evento para un nuevo usuario
+        // Event for a new user
         socket.on("newuser",function(username){
             socket.join(username);
         });
     
-        // Evento para cuando un usuario sale
+        // Event for when a user exits
         socket.on("exituser",function(username){
             io.to(username).emit('logout', 'auth/logout');
             setTimeout(function() {
-                // Aquí va el código que deseas ejecutar después de esperar 1 segundo
                 socket.broadcast.to(username).emit('refresh', '/');
-            }, 1000); // 1000 milisegundos = 1 segundo
+            }, 1000); // 1000 milliseconds = 1 second
             socket.disconnect(true);
         });
     
-        // Evento de chat
+        // Chat event
         socket.on("chat", async (msg, chatId, type) => {
             if (type == 1){
                 await DirectChat.createMsg(chatId, msg.username, msg.text, msg.time);
-                //await agregarMensajePersonal(chatId, msg.username, msg.text);
             } else {
                 await RoomChat.createMsg(chatId, msg.username, msg.text, msg.time);
             }
             socket.broadcast.to(chatId).emit('chat', msg);
         });
     
-        // Evento para crear una sala
+        // Event to create a room
         socket.on('create room', async ({ roomName, desc, option }, user, lastchatid) => {
             const roomData = {
                 name: roomName,
@@ -78,12 +76,12 @@ module.exports = function(io) {
     
         socket.on('direct message', async function(username, user, lastchatid) {
             try {
-                const { id, isNew } = await verificarYCrearRelacion(username, user);
+                const { id, isNew } = await verifyAndCreateRelationship(username, user);
                 if (id) {
                     socket.leave(lastchatid);
                     socket.join(id);
                     if (isNew) {
-                        // Emitir un evento personalizado al usuario 'username' para que utilice la función 'updateMyDirectMsg'
+                        // Issue a custom event to the user 'username' to use the function 'updateMyDirectMsg'.
                         io.to(user).emit('new-direct-message', user);
                         io.to(username).emit('new-direct-message', username);
                     }
@@ -92,7 +90,7 @@ module.exports = function(io) {
                     socket.emit('userchat-id', false, {});
                 }
             } catch (error) {
-                console.error('Error al verificar y crear la relación:', error);
+                console.error('Error in verifying and creating the relationship: ', error);
                 socket.emit('userchat-id', false, {});
             }
         });
@@ -112,11 +110,11 @@ module.exports = function(io) {
                     socket.emit('data-chat', true, {id: room.id, name: room.name, description: room.description, creator: room.creator, private: room.private});
                 } else {
                     socket.emit('data-chat', false, {});
-                    console.log('No se encontró ningún room con el ID proporcionado');
+                    console.log('No room found with the provided ID');
                 }
             } catch (error) {
                 socket.emit('data-chat', false, {});
-                console.error('Error al recuperar los datos del room:', error);
+                console.error('Error retrieving room data: ', error);
             }
         });
     });

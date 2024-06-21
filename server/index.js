@@ -1,4 +1,4 @@
-// Importar dependencias para el servidor
+// Import dependencies for the server
 const express = require('express');
 const http = require('http');
 const app = express();
@@ -10,72 +10,73 @@ const bodyparser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-// Usar Variables de Entorno
+
+// Using Environment Variables
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Especifica la ruta completa al archivo .env
+// Specifies the full path to the .env file
 const envPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: envPath });
 
-// Importar enrutadores
+// Import routers
 const loginRoutes = require('./routes/loginRouter');
 const messageRouter = require('./routes/messageRouter');
 const loadRouter = require('./routes/loadRouter');
 
-// Importar funcionalidad de socket.io
+// Import functionality from socket.io
 const socketEvents = require('./sockets/socketEvents');;
 
-// Configuración de Express
+// Express Configuration
 app.set('view engine', 'hbs');
 app.engine('.hbs',engine({extname: '.hbs',}));
 
-// Middleware para procesar datos de formulario y JSON
+// Middleware for form data and JSON processing
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
-// Middleware para utilizar cookies seguras
+// Middleware to use secure cookies
 app.use(cookieParser());
 
-// Middleware para evitar ataques XSS
+// Middleware to prevent XSS attacks
 app.use(helmet());
 
-// Configuración de las sesiones
+// Session configuration
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }));
 
-// Redireccionar las solicitudes HTTP a un enrutador
-app.use('/auth', loginRoutes); // los que tengan /auth en su url son de tipo login/register/logout
-app.use('/messages', messageRouter); // los que tienen /messages en su url son para cargar los mensajes
-app.use('/load',loadRouter); // los que tienen /load en su url son para cargar los datos de los chats y rooms
+// Redirecting HTTP requests to a router
+app.use('/auth', loginRoutes); // those with /auth in their url are of type login/register/logout
+app.use('/messages', messageRouter); // those with /messages in their url are for uploading messages
+app.use('/load',loadRouter); // those with /load in their url are for loading data from chats and rooms
 
-// Cargar directorio
+// Load directory
 const dir = path.resolve(__dirname, '../views');
 app.use(express.static(dir));
 
-// Establecer conexión permanente
+// Establish permanent connection
 app.get('/',(req,res) => {
     if(req.session.loggedin == true){
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.render('home', {username: req.session.username} );
     } else {
-      res.redirect('/auth/login');
+      res.render('landing')
     }
 });
 
-// Configuración de Socket.IO
+// Socket.IO configuration
 io.use(require('./middleware/socketAuth'));
 
-// Llama a la función exportada de socketEvents y pásale los parámetros necesarios
+// Call the exported socketEvents function and pass the necessary parameters to it
 socketEvents(io);
 
-// Iniciar el servidor
+// Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
 

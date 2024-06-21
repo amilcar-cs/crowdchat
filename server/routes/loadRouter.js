@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-// Importar controladores de rutas
+// Import route controllers
 const loadController = require('../controllers/loadControllers');
 
-// Importar el Middleware para verificar el token JWT
+// Import Middleware to verify JWT token
 const verifyToken = require('../middleware/verifyToken');
 
 router.get('/public-rooms/:userId',verifyToken,loadController.getPublicRooms);

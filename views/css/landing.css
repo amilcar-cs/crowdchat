@@ -1,0 +1,111 @@
+.lp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1em;
+}
+
+.lp header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lp header img path{
+    width: 32px;
+}
+
+.lp header h4 {
+    font-size: 1em;
+    color: var(--text-color);
+    font-weight: 300;
+    background: var(--sub1-color);
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 0.5em;
+    margin-top: 0.8em;
+}
+
+.lp .lp-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.125em;
+}
+
+
+.lp .lp-main h1{
+    color: var(--text-color);
+    font-size: 4.25em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -3.4px;
+    text-align: center;
+    padding: 0em;
+    margin-top: 0.1em;
+    line-height: 0.9em;
+}
+
+.lp .lp-main h2{
+    color: var(--wcolor);
+    text-align: center;
+    font-size: 1.375em;
+    font-style: normal;
+    font-weight: 300;
+    max-width: 48.75em;
+    line-height: 1.5em; /* 150% */
+}
+
+.lp .lp-blocks {
+    display: flex;
+    justify-content: space-between;
+}
+
+.lp .lp-blocks .block {
+    display: flex;
+    flex-direction: column;
+    max-width: 13.75em;
+    margin: 0.5em;
+}
+
+.lp .lp-blocks .block h3{
+    color: var(--highlight-color);
+    font-size: 1.25em;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.24px;
+}
+
+.lp .lp-blocks .block p{
+    color: var(--wcolor);
+    font-size: 0.875em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25em; /* 142.857% */
+    letter-spacing: 0.518px;
+    margin-top: 0.250em;
+}
+
+.lp footer button {
+    max-width: 8.5em;
+    max-height: 2.8125em;
+    flex-shrink: 0;
+    padding: 0.75em 0.875em 0.75em 0.875em;
+    border-radius: 0.375em;
+    border: 0.125em solid var(--sub1-color);
+    background: var(--main-color);
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    box-shadow: 0em 0em 0.625em 0.0625em rgba(28, 32, 35, 0.25);
+    margin-top: 0.375em;
+    cursor: pointer;
+}
+
+.lp footer button:hover{
+    background: var(--highlight-color);
+}
