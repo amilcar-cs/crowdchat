@@ -9,21 +9,21 @@
 ## Features
 
 * **Register and Login:** Like any other web chat, you need to create an account to interact with other users.
-![landing page](./readme_images/login_signup.gif)
+![login and signup page](./readme_images/login_signup.gif)
 
 * **Group Chats:** You can join or create public or private rooms. The key difference is how users join these rooms.
 
 For public rooms, users can search through the public room window or join directly using a room code.
-![landing page](./readme_images/public_conversation.gif)
+![a chat in a public room](./readme_images/public_conversation.gif)
 
 For private rooms, access is only possible via the room code.
-![private](./readme_images/private_conversation.gif)
+![a chat in a private room](./readme_images/private_conversation.gif)
 
 * **Direct Chats:** If you want to chat with a single user, you can use the username search. Simply enter the username of the person you want to chat with, and if the username exists, you will be redirected to a new chat.
-![private](./readme_images/direct_conversation.gif)
+![a direct chat beetwen two users](./readme_images/direct_conversation.gif)
 
 * **Interface:** Crowdchat is accessible on both PC and smartphones. Additionally, you can choose between dark mode or light mode.
-![private](./readme_images/light_mode.gif)
+![light mode and dark mode](./readme_images/light_mode.gif)
 
 ## How to Run
 First of all, it is necessary to know that this application only runs using the https protocol, due to the various security measures that have been implemented to protect the information that transits the network. 
