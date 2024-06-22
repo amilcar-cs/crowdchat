@@ -26,6 +26,9 @@ For private rooms, access is only possible via the room code.
 ![private](./readme_images/light_mode.gif)
 
 ## How to Run
+First of all, it is necessary to know that this application only runs using the https protocol, due to the various security measures that have been implemented to protect the information that transits the network. 
+
+It can be run without any problem by viewing it at http://localhost:3000/, but if you try to access it using an ip address, then the application will not run properly.
 
 1. **Install Node.js:** The backend of Crowdchat runs on Node.js, so you need to install it. You can do this using [nvm](https://github.com/nvm-sh/nvm) and following the instructions provided in the repository.
 
@@ -98,6 +101,20 @@ DB_NAME =
 4. **installation:** After completing the above steps, install all Node.js dependencies using `npm install`. Then, start the server using `npm run start`, or if you want to make changes while the application is running, use `npm run dev`. Ensure your database is running and configured as described.
 
 ## Tech Stack
+
 ### Front-End
+- **Languages:**
+  - HTML
+  - CSS
+  - JavaScript
 
 ### Back-End
+- **Languages:**
+  - JavaScript
+
+- **Libraries and Frameworks:**
+  - Express: A web framework for Node.js applications.
+  - MySQL: A client library for MySQL in Node.js.
+  - Socket.io: A JavaScript library for real-time web applications.
+  - jsonwebtoken: A JSON Web Token implementation for Node.js.
+  - helmet: A set of functions that secure Express apps by setting various HTTP headers.
